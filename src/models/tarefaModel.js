@@ -1,17 +1,19 @@
+import prisma from '../../prisma/client.js';
+
 class TarefaModel {
-  constructor() {
-    this.tarefas = [{ id: 1, descricao: "Estudar Node.js", concluida: false }];
-  }
-  getAll = () => this.tarefas;
-  create = (descricao) => {
-    const novaTarefa = {
-      id: this.tarefas.length + 1,
-      descricao,
-      concluida: false,
-    };
-    this.tarefas.push(novaTarefa);
-    return novaTarefa;
+  getAll = async () => {
+    return await prisma.task.findMany();
   };
+
+  create = async (descricao) => {
+ return await prisma.task.create({
+data: {
+  descricao,
+},
+})
+  };
+
+
   update = (id, concluida) => {
     const tarefa = this.tarefas.find((t) => t.id === Number(id));
     if (tarefa) {
