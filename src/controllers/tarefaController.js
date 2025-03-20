@@ -44,13 +44,21 @@ res.json(tarefaAtualizada);
   res.status(500).json({ erro: "Erro ao atualizar a tarefa" });
 }
   };
-  
-  delete = ({ params: { id } }, res) => {
-    const sucesso = tarefaModel.delete(id);
-    if (!sucesso) {
-      return res.status(404).json({ erro: "Tarefa não encontrada" });
+
+  delete = async(req, res) => {
+    const { id } = req.params;
+    try {
+      const sucesso = await tarefaModel.delete(id);
+
+    if (sucesso) {
+        return res.status(404).json({ erro: "Tarefa não encontrada" });
+      }
+
+      res.status(200).send({message: "Tarefa deletada com sucesso"});
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ erro: "Erro ao deletar a tarefa" });
     }
-    res.status(204).send();
   };
 }
 export default new TarefaController();
