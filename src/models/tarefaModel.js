@@ -31,8 +31,6 @@ return tarefa;
 
   };
   delete = async(id) => {
-    const {id} = req.params;
-
     try {
       const tarefaDeletada = await prisma.task.delete({
         where: {id},
@@ -43,7 +41,7 @@ return tarefa;
       console.log("Erro ao deletar a tarefa", error);
       throw error;
     }
-    
+
   };
 }
 export default new TarefaModel();

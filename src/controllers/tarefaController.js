@@ -11,14 +11,14 @@ class TarefaController {
     }
   };
 
-  create = (req, res) => {
+  create = async (req, res) => {
     const { descricao } = req.body;
     try {
     if (!descricao) {
       return res.status(400).json({ erro: "Descrição é obrigatória" });
     }
     
-    const novaTarefa = tarefaModel.create(descricao);
+    const novaTarefa = await tarefaModel.create(descricao);
     res.status(201).json(novaTarefa);
   } catch (error) {
     console.error(error);
@@ -47,10 +47,11 @@ res.json(tarefaAtualizada);
 
   delete = async(req, res) => {
     const { id } = req.params;
-    try {
-      const sucesso = await tarefaModel.delete(id);
 
-    if (sucesso) {
+    try {
+      const sucesso = await tarefaModel.delete(Number(id));
+
+    if (!sucesso) {
         return res.status(404).json({ erro: "Tarefa não encontrada" });
       }
 
